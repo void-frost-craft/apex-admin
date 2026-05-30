@@ -231,6 +231,7 @@ spring:
 
 ## 📚 相关文档
 
+- [环境搭建指南](docs/setup-guide.md) - **必看！** 详细的环境安装和配置说明
 - [项目规划文档](docs/project-plan.md)
 - [Claude Code 工作流](docs/claude-code-workflow.md)
 - [后端 README](backend/README.md)

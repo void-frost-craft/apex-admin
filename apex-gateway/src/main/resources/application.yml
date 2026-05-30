@@ -1,0 +1,113 @@
+# Apex Gateway 配置文件
+server:
+  port: 8080
+
+spring:
+  application:
+    name: apex-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: apex-admin
+        group: DEFAULT_GROUP
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # 认证服务路由
+        - id: apex-auth
+          uri: lb://apex-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        # 系统管理服务路由
+        - id: apex-system
+          uri: lb://apex-system
+          predicates:
+            - Path=/system/**
+          filters:
+            - StripPrefix=1
+        # 日志服务路由
+        - id: apex-log
+          uri: lb://apex-log
+          predicates:
+            - Path=/log/**
+          filters:
+            - StripPrefix=1
+        # 定时任务服务路由
+        - id: apex-job
+          uri: lb://apex-job
+          predicates:
+            - Path=/job/**
+          filters:
+            - StripPrefix=1
+        # 文件服务路由
+        - id: apex-file
+          uri: lb://apex-file
+          predicates:
+            - Path=/file/**
+          filters:
+            - StripPrefix=1
+        # 消息服务路由
+        - id: apex-message
+          uri: lb://apex-message
+          predicates:
+            - Path=/message/**
+          filters:
+            - StripPrefix=1
+        # 搜索服务路由
+        - id: apex-search
+          uri: lb://apex-search
+          predicates:
+            - Path=/search/**
+          filters:
+            - StripPrefix=1
+        # 监控服务路由
+        - id: apex-monitor
+          uri: lb://apex-monitor
+          predicates:
+            - Path=/monitor/**
+          filters:
+            - StripPrefix=1
+        # 代码生成服务路由
+        - id: apex-generator
+          uri: lb://apex-generator
+          predicates:
+            - Path=/generator/**
+          filters:
+            - StripPrefix=1
+
+  # Redis 配置
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password:
+      database: 0
+
+# Sa-Token 配置
+sa-token:
+  # Token 名称
+  token-name: Authorization
+  # Token 有效期 (30天)
+  timeout: 2592000
+  # Token 最低活跃频率 (单位: 秒)
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 Token
+  is-share: true
+  # Token 风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: false
+
+# 日志配置
+logging:
+  level:
+    com.apex.gateway: debug
+    org.springframework.cloud.gateway: debug
